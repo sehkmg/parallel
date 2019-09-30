@@ -6,6 +6,7 @@ Scheduler for deploying lots of python(usually machine learning) experiments.
 
 ## How to use
 1. Write description of deployment. (Most of the exceptions are handled.)
+
 In cmd2deploy.txt:
 <pre><code>server:0
 gpu:0
