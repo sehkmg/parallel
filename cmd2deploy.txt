@@ -1,0 +1,32 @@
+server:0
+gpu:0
+python -c 'print("Start: 0"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+{
+    python -c 'print("Start: 1"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+    python -c 'print("Start: 2"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+    python -c 'print("Start: 3"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+}
+
+gpu:1
+python -c 'print("Start: 4"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+python -c 'print("Start: 5"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+
+gpu:2
+python -c 'print("Start: 6"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+
+gpu:3
+python -c 'print("Start: 7"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+python -c 'print("Start: 8"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+
+server:1
+gpu:0
+python -c 'print("Start: 9"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+
+gpu:1
+python -c 'print("Start: 10"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+{
+    python -c 'print("Start: 11"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+    python -c 'print("Start: 12"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+    python -c 'print("Start: 13"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
+}
+python -c 'print("Start: 14"); import torch, time; torch.ones(1).cuda(); time.sleep(5)'
