@@ -7,7 +7,7 @@ import asyncio
 
 def get_line(cmd_file):
     p_server = re.compile('^server:\d+')
-    p_gpu = re.compile('^gpu:\d+')
+    p_gpu = re.compile('^gpu:\d(,\d)*')
     p_python = re.compile('^python')
     p_open = re.compile('^{$')
     p_close = re.compile('^}$')
@@ -37,8 +37,11 @@ def get_line(cmd_file):
 
 def get_gpu_num_wrapper(max_gpu_num):
     def get_gpu_num(line):
-        gpu_num = int(line.split(':')[1])
-        assert gpu_num < max_gpu_num, 'gpu:{} is not available.'.format(gpu_num)
+        gpu_list = list(map(int, line.split(':')[1].split(',')))
+        for gpu_num in gpu_list:
+            assert gpu_num < max_gpu_num, 'gpu:{} is not available.'.format(gpu_num)
+
+        gpu_num = ','.join(list(map(str, gpu_list)))
 
         return gpu_num
     return get_gpu_num
@@ -105,6 +108,7 @@ def get_cmd_list(args):
 def run_parallel(commands, sequential):
     assert commands and type(commands) == list
     p_int = re.compile('\d+$')
+    p_gpu = re.compile('\d(,\d)*$')
 
     def func(command):
         if isinstance(command, list):
@@ -128,17 +132,17 @@ def run_parallel(commands, sequential):
 
                     while True:
                         try:
-                            info = input('Enter command index, gpu num: ')
+                            info = input('Enter command_index/gpu_num (e.g. 3/0,3): ')
 
-                            if len(info.split(',')) < 2:
+                            if len(info.split('/')) < 2:
                                 continue
 
-                            cmd_idx = info.split(',')[0].strip()
-                            gpu_num = info.split(',')[1].strip()
+                            cmd_idx = info.split('/')[0].strip()
+                            gpu_num = info.split('/')[1].strip()
 
-                            if p_int.match(cmd_idx) and p_int.match(gpu_num):
+                            if p_int.match(cmd_idx) and p_gpu.match(gpu_num):
                                 cmd_idx = int(cmd_idx)
-                                gpu_str = 'CUDA_VISIBLE_DEVICES={} '.format(int(gpu_num))
+                                gpu_str = 'CUDA_VISIBLE_DEVICES={} '.format(gpu_num)
                                 break
                         except KeyboardInterrupt:
                             is_exit = True
