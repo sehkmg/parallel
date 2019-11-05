@@ -172,7 +172,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--file',
         type=str,
-        default='cmd2deploy.txt')
+        default='parallel/cmd2deploy.txt')
     parser.add_argument(
         '--server_num',
         type=int,
