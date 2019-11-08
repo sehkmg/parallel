@@ -158,7 +158,7 @@ def run_parallel(commands, sequential):
                     enter = input('Press Enter to Continue...\n')
 
                 else:
-                    time.sleep(0.5*idx)
+                    time.sleep(0.5)
                     futures.append(loop.run_in_executor(executor, func, commands[idx]))
 
             for response in await asyncio.gather(*futures):
